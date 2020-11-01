@@ -10,38 +10,43 @@ function initCanvas(c){
         height = c.height = window.innerHeight,
         ctx = c.getContext('2d')
     
-    const
-        particles = [],
-        particleNum = 100
-    for(let i = 0; i<particleNum; i++){
-        particles.push(new Particle(
-            10,
-            10,
-            Math.random() * 2+ 1,
-            Math.PI * Math.random() * 2
-        ))
+    let particles = makeFire(500)
+
+    function makeFire(count,x = width/2,y = height/2){
+        const particles = []
+        for(let i = 0; i<count; i++){
+            particles.push(new Particle(
+                x,
+                y,
+                Math.random() * 5 + 2,
+                Math.PI * Math.random() * 2,
+                0.1
+            ))
+        }
+        return particles
     }
-    
+    document.body.addEventListener('click',function(e){
+        particles = makeFire(500,e.x,e.y)
+    })
     render()
     
     function render(){
-        ctx.fillStyle = 'rgba(225,225,225,1)'
+        ctx.fillStyle = 'rgba(255,255,255,0.4)'
         ctx.fillRect(0,0,width,height)
         ctx.fillStyle = 'rgba(0,0,0,1)'
-        particles.forEach(p=>{
-            p.position.addTo(p.velocity)
+        particles.forEach((p,i)=>{
+            // draw
             const
                 px = p.position.getX(),
                 py = p.position.getY(),
                 startY = 0,
                 startX = 0,
                 rd = 3
-
             ctx.beginPath()
             ctx.arc(p.position.getX(),p.position.getY(),rd,0,Math.PI*2,false)
             ctx.fill()
-            if(px>=width - rd || px <= startX + rd) p.velocity.setX(-p.velocity.getX())
-            if(py>=height - rd || py <= startY + rd) p.velocity.setY(-p.velocity.getY())
+            // update
+            p.update()
         })
         requestAnimationFrame(render)
     }
