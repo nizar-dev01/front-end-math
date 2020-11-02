@@ -1,3 +1,6 @@
+import Vector from './vectors'
+import Particle from './particles'
+
 window.addEventListener('load',function(){
     initCanvas(canvas)
 });

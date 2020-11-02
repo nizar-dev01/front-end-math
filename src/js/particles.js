@@ -1,3 +1,4 @@
+import Vector from './vectors'
 class Particle {
     position
     velocity
@@ -22,3 +23,5 @@ class Particle {
         this.position.addTo(this.velocity)
     }
 }
+
+export default Particle

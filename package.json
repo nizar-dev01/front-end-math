@@ -13,15 +13,29 @@
     "url": "https://github.com/nizar-dev01/front-end-math/issues"
   },
   "homepage": "https://github.com/nizar-dev01/front-end-math#readme",
-  "scripts":{
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js --open",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.js",
     "prod": "cross-env NODE_ENV=production webpack --config webpack.config.js"
   },
   "dependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^1.2.1",
+    "sass": "^1.28.0",
+    "sass-loader": "^10.0.4",
+    "style-loader": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-static-block": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@webpack-cli/serve": "^1.0.1",
+    "babel-loader": "^8.1.0",
     "cross-env": "^7.0.2",
     "html-webpack-injector": "^1.1.4",
     "html-webpack-plugin": "^4.5.0",
     "webpack": "^5.3.2",
+    "webpack-cli": "^4.1.0",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^5.3.0"
   }

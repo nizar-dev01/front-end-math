@@ -1,3 +1,6 @@
+import Vector from './vectors'
+import Particle from './particles'
+
 window.addEventListener('load',function(){
     initCanvas(canvas)
 });
@@ -8,7 +11,7 @@ function initCanvas(c){
     const
         width = c.width = window.innerWidth,
         height = c.height = window.innerHeight,
-        ctx = c.getContext('2d')
+        ctx = c.getContext('2d'),
         p = new Particle(
             100,
             height - 50,
