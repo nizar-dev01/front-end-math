@@ -2,8 +2,11 @@ const
     path = require('path')
 module.exports = {
     devServer:{
-        port: 3000,
-        contentBase: path.join(__dirname, '../dist')
+        port: process.env.PORT || 3000,
+        contentBase: path.join(__dirname, '../dist'),
+        overlay: true,
+        open: true,
+        openPage: '/acceleration.html'
     },
     module:{
         rules:[
