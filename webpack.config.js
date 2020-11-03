@@ -1,3 +1,4 @@
+require('dotenv').config()
 const
     common = require('./config/webpack.common'),
     dev = require('./config/webpack.dev'),
