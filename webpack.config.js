@@ -1,17 +1,100 @@
-require('dotenv').config()
 const
-    common = require('./config/webpack.common'),
-    dev = require('./config/webpack.dev'),
-    prod = require('./config/webpack.prod'),
-    {merge} = require('webpack-merge')
+    path = require('path'),
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    HtmlWebpackInjector = require('html-webpack-injector'),
+    isProd = process.env.NODE_ENV==='production',
+    MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+    { CleanWebpackPlugin } = require('clean-webpack-plugin'),
+    minify = isProd ? {
+        removeAttributeQuotes:false,
+        collapseWhitespace:false,
+        removeComments:false
+    } : null,
+    resolve = p => path.resolve(__dirname,p),
+    htmlFactory = t => new HtmlWebpackPlugin({
+        inject: true,
+        minify,
+        template: `./src/${t}.html`,
+        filename: `${t}${isProd ? '[hash].' : '.'}html`,
+        chunks: [t,'common_head'],
+        favicon: './src/assets/favicon.ico'
+    })
 
-module.exports = () =>{
-    switch(process.env.NODE_ENV){
-        case 'development' :
-            return merge(common,dev)
-        case 'production' :
-            return merge(common,prod)
-        default :
-            throw new Error('No matching configuration found!')
-    }
+module.exports = {
+    mode: isProd ? 'production' : 'development',
+    devtool: 'inline-source-map',
+    devServer:{
+        port: process.env.PORT || 3000,
+        contentBase: path.join(__dirname, '../dist'),
+        overlay: true,
+        open: true,
+        openPage: '/acceleration.html',
+        hot: true,
+        publicPath: '/'
+    },
+    entry:{
+        acceleration: './src/js/acceleration.js',
+        fireworks: './src/js/fireworks.js',
+        navigation: './src/js/navigation.js',
+        particles: './src/js/particles.js',
+        trig: './src/js/trig.js',
+        vectors: './src/js/vectors.js',
+        velocity: './src/js/velocity.js',
+        gravity: './src/js/gravity.js',
+        common_head: './src/js/common.js'
+    },
+    output:{
+        filename: 'js/[name].[chunkhash].js',
+        path: path.resolve(__dirname,'../dist'),
+        publicPath: '/'
+    },
+    resolve:{
+        alias:{
+            "@": resolve('src')
+        }
+    },
+    plugins:[
+        htmlFactory('acceleration'),
+        htmlFactory('fireworks'),
+        htmlFactory('navigation'),
+        htmlFactory('trig'),
+        htmlFactory('velocity'),
+        htmlFactory('gravity'),
+        new HtmlWebpackInjector()
+    ],
+    module:{
+        rules: [
+            {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: isProd ? [
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
+                    "css-loader",
+                    "sass-loader"
+                ] : [
+                    'style-loader',
+                    "css-loader",
+                    "sass-loader"
+                ]
+            }
+        ]
+    },
 }
+
+if(isProd) module.exports.plugins.push(
+    new MiniCssExtractPlugin({
+        filename:'css/[name].[hash].css',
+    }),
+    new CleanWebpackPlugin(),
+)
