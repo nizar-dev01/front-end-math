@@ -2,18 +2,18 @@ import Vector from './vectors'
 import Particle from './particles'
 
 window.addEventListener('load',function(){
-    initCanvas(canvas)
+    initCanvas(canvas,1000)
 });
 
 
 
-function initCanvas(c){
+function initCanvas(c,particleCount){
     const
         width = c.width = window.innerWidth,
         height = c.height = window.innerHeight,
         ctx = c.getContext('2d')
     
-    let particles = makeFire(500)
+    let particles = makeFire(particleCount)
 
     function makeFire(count,x = width/2,y = height/2){
         const particles = []
@@ -29,7 +29,7 @@ function initCanvas(c){
         return particles
     }
     document.body.addEventListener('click',function(e){
-        particles = makeFire(500,e.x,e.y)
+        particles = makeFire(particleCount,e.x,e.y)
     })
     render()
     

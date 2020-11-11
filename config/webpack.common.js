@@ -28,6 +28,7 @@ module.exports = {
         trig: './src/js/trig.js',
         vectors: './src/js/vectors.js',
         velocity: './src/js/velocity.js',
+        gravity: './src/js/gravity.js',
         common_head: './src/js/common.js'
     },
     output:{
@@ -45,6 +46,7 @@ module.exports = {
         htmlFactory('navigation'),
         htmlFactory('trig'),
         htmlFactory('velocity'),
+        htmlFactory('gravity'),
         new HtmlWebpackInjector()
     ],
     module:{
