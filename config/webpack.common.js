@@ -2,7 +2,8 @@ const
     path = require('path'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     HtmlWebpackInjector = require('html-webpack-injector'),
-    isProd = process.env.NODE_ENV==='production'
+    isProd = process.env.NODE_ENV==='production',
+    MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const
     minify = isProd ? {
         removeAttributeQuotes:false,
@@ -20,6 +21,7 @@ const
         favicon: './src/assets/favicon.ico'
     })
 module.exports = {
+    mode: 'development',
     entry:{
         acceleration: './src/js/acceleration.js',
         fireworks: './src/js/fireworks.js',
@@ -33,7 +35,8 @@ module.exports = {
     },
     output:{
         filename: 'js/[name].[chunkhash].js',
-        path: path.resolve(__dirname,'../dist')
+        path: path.resolve(__dirname,'../dist'),
+        publicPath: '/'
     },
     resolve:{
         alias:{
@@ -60,6 +63,22 @@ module.exports = {
                         presets: ['@babel/preset-env']
                     }
                 }
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: isProd ? [
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
+                    "css-loader",
+                    "sass-loader"
+                ] : [
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
+                    "css-loader",
+                    "sass-loader"
+                ]
             }
         ]
     },
